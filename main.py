@@ -108,17 +108,24 @@ def webhook_handler():
         dispatcher.process_update(update)
     return 'ok'
 
+switch = False
 
 def reply_handler(bot, update):
     """Reply message."""
     #text = update.message.text
     #update.message.reply_text(text)
+    global switch
     chatgpt = ChatGPT()        
     
-    chatgpt.prompt.add_msg(update.message.text) #人類的問題 the question humans asked
-    ai_reply_response = chatgpt.get_response() #ChatGPT產生的回答 the answers that ChatGPT gave
+    if update.message.text == "open":
+	switch = True
+    if update.message.text == "close":
+	switch = False
+    if switch == True:
+        chatgpt.prompt.add_msg(update.message.text) #人類的問題 the question humans asked
+        ai_reply_response = chatgpt.get_response() #ChatGPT產生的回答 the answers that ChatGPT gave
     
-    update.message.reply_text(ai_reply_response) #用AI的文字回傳 reply the text that AI made
+        update.message.reply_text(ai_reply_response) #用AI的文字回傳 reply the text that AI made
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
