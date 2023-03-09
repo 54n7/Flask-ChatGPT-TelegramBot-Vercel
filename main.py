@@ -117,10 +117,12 @@ def reply_handler(bot, update):
     global switch
     chatgpt = ChatGPT()        
     
-    if update.message.text == "open":
+    if update.message.text == "打開":
 	switch = True
-    if update.message.text == "close":
+	update.message.reply_text("open")
+    if update.message.text == "關閉":
 	switch = False
+	update.message.reply_text("close")
     if switch == True:
         chatgpt.prompt.add_msg(update.message.text) #人類的問題 the question humans asked
         ai_reply_response = chatgpt.get_response() #ChatGPT產生的回答 the answers that ChatGPT gave
